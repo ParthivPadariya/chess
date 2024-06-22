@@ -3,12 +3,12 @@ import { Game } from './Game';
 import { INIT_GAME, MOVE } from './message';
 
 export class GameManage {
-    private game: Game[];
+    private games: Game[];
     private pendingUser: WebSocket | null;
     private users: WebSocket[];
 
     constructor() {
-        this.game = [];
+        this.games = [];
         this.pendingUser = null;
         this.users = [];
     }
@@ -28,14 +28,13 @@ export class GameManage {
     private addHandler(socket: WebSocket) {
         socket.on('message', (data) => {
             const message = JSON.parse(data.toString());
-
+            
             if (message.type === INIT_GAME) {
                 if (this.pendingUser) {
-                    // start a game
+                    // start a game if any pending user exist then connect b/w
                     const game = new Game(this.pendingUser, socket);
-                    this.game.push(game);
+                    this.games.push(game);
                     this.pendingUser = null;
-
                 }
                 else{
                     this.pendingUser = socket;
@@ -43,7 +42,7 @@ export class GameManage {
             }
 
             if (message.type === MOVE) {
-                const game = this.game.find(game => game.player1 === socket || game.player2 == socket);
+                const game = this.games.find(game => game.player1 === socket || game.player2 == socket);
                 if (game) {
                     game.makeMove(socket, message.move);
                 }

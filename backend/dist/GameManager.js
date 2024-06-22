@@ -5,7 +5,7 @@ const Game_1 = require("./Game");
 const message_1 = require("./message");
 class GameManage {
     constructor() {
-        this.game = [];
+        this.games = [];
         this.pendingUser = null;
         this.users = [];
     }
@@ -24,9 +24,9 @@ class GameManage {
             const message = JSON.parse(data.toString());
             if (message.type === message_1.INIT_GAME) {
                 if (this.pendingUser) {
-                    // start a game
+                    // start a game if any pending user exist then connect b/w
                     const game = new Game_1.Game(this.pendingUser, socket);
-                    this.game.push(game);
+                    this.games.push(game);
                     this.pendingUser = null;
                 }
                 else {
@@ -34,7 +34,7 @@ class GameManage {
                 }
             }
             if (message.type === message_1.MOVE) {
-                const game = this.game.find(game => game.player1 === socket || game.player2 == socket);
+                const game = this.games.find(game => game.player1 === socket || game.player2 == socket);
                 if (game) {
                     game.makeMove(socket, message.move);
                 }
