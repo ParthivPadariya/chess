@@ -61,13 +61,13 @@ class Game {
         // update board
         // push move99
         if (this.moveCount % 2 === 0) {
-            this.player2.emit(JSON.stringify({
+            this.player2.send(JSON.stringify({
                 type: message_1.MOVE,
                 payload: move
             }));
         }
         else {
-            this.player1.emit(JSON.stringify({
+            this.player1.send(JSON.stringify({
                 type: message_1.MOVE,
                 payload: move
             }));

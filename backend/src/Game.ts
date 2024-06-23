@@ -41,7 +41,7 @@ export class Game {
         // console.log("---> ",this.board.move, this.board.move.length);
         
         if (this.moveCount%2 === 0 && socket !== this.player1) {
-            return
+            return 
         }
 
         if (this.moveCount%2 === 1 && socket !== this.player2) {
@@ -75,13 +75,13 @@ export class Game {
         // update board
         // push move99
         if (this.moveCount % 2 === 0) {
-            this.player2.emit(JSON.stringify({
+            this.player2.send(JSON.stringify({
                 type: MOVE,
                 payload: move
             }))
         }
         else{
-            this.player1.emit(JSON.stringify({
+            this.player1.send(JSON.stringify({
                 type: MOVE,
                 payload: move
             }))
@@ -89,6 +89,7 @@ export class Game {
         
         // send updated board both player
         this.moveCount++;
+        
         
     }
 
